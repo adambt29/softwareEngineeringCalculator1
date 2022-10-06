@@ -25,11 +25,11 @@
                         <version>5.2.0-M1</version>
                     </dependency>
                 </dependencies>
-                <!--configuration>
+                <configuration>
                     <excludes>
                         <exclude>com.driver.test.VehicleTest</exclude>
                     </excludes>
-                </configuration-->
+                </configuration>
             </plugin>
         </plugins>
     </build>
