@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.*;
 import java.util.*;
 
-public class CalculatorTests {
+public class CalculatorTest {
     public  ArrayList<String> testList=new ArrayList<String>(0);
     public  ArrayList<String> expectedList=new ArrayList<String>(0);
 
