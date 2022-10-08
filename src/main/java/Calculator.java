@@ -6,7 +6,19 @@ public class Calculator {
     public static boolean validExpression = true;
 
     public static void main(String[] args) throws IOException {
+        // String expression;
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        System.out.print("Enter your mathematical expression, or 'quit' to exit program: ");
+        expression = reader.readLine();
 
+        // Loops until user enters 'quit'
+        while (!expression.equals("quit")) {
+            finalResult(expression);
+            System.out.print("Enter your next mathematical expression, or 'quit' to exit program: ");
+            expression = reader.readLine();
+        }
+
+        System.out.println("Thank you for using our calculator");
     }
 
     public static ArrayList<String> expressionToIntsAndOperatorString(String expression) {
@@ -90,7 +102,36 @@ public class Calculator {
     // convert into arraylist of ints and operators, then perform the necessary
     // maths to compute the result of that expression, outputting it as a string
     public static String finalResult(String expressionn) {
-        ArrayList<String> listOfInput = expressionToIntsAndOperatorString(expressionn);
-        return "null";
+
+        validExpression = true; // reseting validExpression
+        ArrayList<String> listOfInput = expressionToIntsAndOperatorString(expressionn); // creating arraylist to be
+                                                                                        // iterated through for result
+        if (!validExpression)
+            return "Invalid Expression";
+
+        // BIDMAS: If there is a multiply sign, replace the multiply sign and the ints
+        // on either side with their product
+        while (listOfInput.contains("*")) {
+            int mIndex = listOfInput.indexOf("*");
+            int mResult = Integer.valueOf(listOfInput.get(mIndex - 1)) * Integer.valueOf(listOfInput.get(mIndex + 1));
+            listOfInput.set(mIndex, String.valueOf(mResult));
+            listOfInput.remove(mIndex + 1); // removing index after, first, to maintain index value of other 2
+            listOfInput.remove(mIndex - 1);
+        }
+
+        int result = Integer.valueOf(listOfInput.get(0));
+
+        for (int i = 1; i < listOfInput.size(); i++) {
+            if (listOfInput.get(i).equals("+")) {
+                result += Integer.valueOf(listOfInput.get(i + 1));
+                i++;
+            } else if (listOfInput.get(i).equals("-")) {
+                result -= Integer.valueOf(listOfInput.get(i + 1));
+                i++;
+            }
+        }
+
+        System.out.println("Result = " + result);
+        return String.valueOf(result);
     }
 }
