@@ -24,7 +24,7 @@ public class Calculator {
     public static ArrayList<String> expressionToIntsAndOperatorString(String expression) {
         ArrayList<String> elements = new ArrayList<String>(0);
         boolean wasPrevOperator = false; // boolean to check if the previous character in expression was an operator
-
+        boolean wasPrevMinusForNumber = false;
         String listOfIntChars = "0123456789"; // list of possible int chars
         String listOfOperatorChars = "+-*"; // list of possible operator chars
         int elementsIndex = 0; // starting index of string in 'elements' arraylist
@@ -34,8 +34,14 @@ public class Calculator {
                 || expression.charAt(elementsIndex) == '*')) {
             for (int i = 0; i < expression.length(); i++) {
 
+                if (expression.charAt(i) == '-' && wasPrevMinusForNumber == false
+                        && (i == 0 || wasPrevOperator == true)) {
+                    elements.add(String.valueOf(expression.charAt(i)));
+                    wasPrevMinusForNumber = true;
+                    wasPrevOperator = false;
+                }
                 // If there are two operators in a row:
-                if ((wasPrevOperator)
+                else if ((wasPrevOperator || wasPrevMinusForNumber)
                         && (expression.charAt(i) == '+' || expression.charAt(i) == '-'
                                 || expression.charAt(i) == '*')) {
                     System.out.println("Invalid Expression: Duplicate operator(s)");
@@ -59,13 +65,16 @@ public class Calculator {
                 // array & set was PrevOperator to False
                 else if (listOfIntChars.contains(String.valueOf(expression.charAt(i)))) {
                     // if prev character was operator then just add new int char to arraylist
+
                     if (wasPrevOperator) {
                         elements.add(String.valueOf(expression.charAt(i)));
                         wasPrevOperator = false;
+                        wasPrevMinusForNumber = false;
                         // if prev character was not operator, add the new int char to the currently
                         // indexed int string
                     } else {
                         wasPrevOperator = false;
+                        wasPrevMinusForNumber = false;
                         elements.set(elementsIndex, elements.get(elementsIndex) + String.valueOf(expression.charAt(i)));
                     }
                 }
